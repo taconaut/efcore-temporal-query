@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
-using System.Diagnostics.CodeAnalysis;
 
 namespace EntityFrameworkCore.TemporalTables.Query
 {
@@ -12,11 +12,11 @@ namespace EntityFrameworkCore.TemporalTables.Query
         private readonly QueryCompilationContext _queryCompilationContext;
 
         public AsOfQuerySqlGeneratorFactory(
-            [NotNull] QuerySqlGeneratorDependencies dependencies,
-            [NotNull] ISqlServerOptions sqlServerOptions)
+            QuerySqlGeneratorDependencies dependencies,
+            ISqlServerOptions sqlServerOptions)
         {
-            _dependencies = dependencies;
-            _sqlServerOptions = sqlServerOptions;
+            _dependencies = dependencies ?? throw new ArgumentNullException(nameof(dependencies));
+            _sqlServerOptions = sqlServerOptions ?? throw new ArgumentNullException(nameof(sqlServerOptions));
         }
 
         public QuerySqlGenerator Create()
